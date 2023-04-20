@@ -15,6 +15,9 @@ def blog(req):
 def blog_single(req):
     return render(req,"home/blog-single.html")
 
+def test(req):
+    return render(req,"home/test.html")
+
 
 
 
