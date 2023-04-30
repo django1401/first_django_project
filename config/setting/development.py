@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
+    'blog',
 ]
 
 STATIC_ROOT = BASE_DIR.joinpath('/static')

@@ -15,11 +15,6 @@ def about(req):
 def contact(req):
     return render(req,"home/contact.html")
 
-def blog(req):
-    return render(req,"home/blog-home.html")
-
-def blog_single(req):
-    return render(req,"home/blog-single.html")
 
 
 
