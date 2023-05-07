@@ -23,7 +23,7 @@ INSTALLED_APPS = [
 ]
 
 STATIC_ROOT = BASE_DIR.joinpath('/static')
-MEDIA_ROOT = BASE_DIR.joinpath('/media')
+MEDIA_ROOT = BASE_DIR.joinpath('media')
 
 STATICFILES_DIRS = [
     BASE_DIR/'static',
