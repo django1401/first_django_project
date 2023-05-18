@@ -26,6 +26,11 @@ class CampingPackage(models.Model):
     def __str__(self):
         return self.city
 
+class Newsletter(models.Model):
+    email = models.EmailField()
+
+    def __str__(self):
+        return self.email
 
 
 

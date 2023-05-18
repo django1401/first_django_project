@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render , get_object_or_404
 from .models import Post, Category, Tags
 from advertisment.models import AdvertisModel
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -48,3 +48,43 @@ def blog_home(req, tag=None, username=None, cat=None):
         'ADV' : adv,
     }
     return render(req, 'blog/blog-home.html', context=context)
+
+
+def blog_single(req, pid):
+     post_list_id = []
+     posts = Post.objects.filter(status=True)
+     for post in posts:
+          post_list_id.append(post.id)
+     
+
+     post_list_id.reverse()
+     
+     if post_list_id.index(pid) == 0:
+          previous_post = None
+          next_post = posts.get(id=post_list_id[1])
+     elif post_list_id.index(pid) == post_list_id.index(post_list_id[-1]):
+          previous_post = posts.get(id=post_list_id[-2])
+          next_post = None
+
+     else:
+          next_post = posts.get(id=post_list_id[post_list_id.index(pid)+1])
+          previous_post =  posts.get(id=post_list_id[post_list_id.index(pid)-1])
+     
+
+
+     try :
+          post = Post.objects.get(id=pid, status=True)
+          post.counted_views += 1
+          post.save()
+          context = {
+               'post': post,
+               'next' : next_post,
+               'prev' : previous_post,
+               }
+          return render(req, 'blog/blog-single.html', context=context)
+     except:
+          return render(req, 'blog/404.html')
+     
+
+     
+     
