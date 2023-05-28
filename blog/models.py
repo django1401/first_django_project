@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+
 class Category(models.Model):
     name = models.CharField(max_length=200)
     def __str__(self):
@@ -12,6 +13,10 @@ class Tags(models.Model):
     name = models.CharField(max_length=200)
     def __str__(self):
         return self.name   
+    
+
+ 
+
 
 
 
@@ -43,3 +48,19 @@ class Post(models.Model):
 
     def snipest(self):
         return " ".join(self.content.split()[:3])
+
+
+class Comments(models.Model):
+    which_post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    email = models.EmailField()
+    subject = models.CharField(max_length=250)
+    message = models.TextField()
+    status = models.BooleanField(default=False)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ("-created_date",)
+
+    def __str__(self):
+        return self.name
