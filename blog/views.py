@@ -1,8 +1,9 @@
 from django.shortcuts import render , get_object_or_404, redirect
-from .models import Post, Category, Tags, Comments
+from .models import Post, Category, Tags, Comments, Replay
 from advertisment.models import AdvertisModel
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from .forms import CommentForm
+from .forms import CommentForm ,ReplayForm
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -76,6 +77,7 @@ def blog_single(req, pid):
 
           try :
                comments = Comments.objects.filter(which_post=pid, status=True)
+               replay = Replay.objects.all()
                post = Post.objects.get(id=pid, status=True)
                post.counted_views += 1
                post.save()
@@ -83,7 +85,8 @@ def blog_single(req, pid):
                     'post': post,
                     'next' : next_post,
                     'prev' : previous_post,
-                    'comments': comments
+                    'comments': comments,
+                    'replay' : replay,
                     }
                return render(req, 'blog/blog-single.html', context=context)
           except:
@@ -96,7 +99,48 @@ def blog_single(req, pid):
                return redirect('/')
           
 
+def replay(req, cid):
+     comment = Comments.objects.get(id=cid)
+     if req.method == 'GET':
+          context = {
+               'comment' : comment,
+          }
+          return render(req, 'blog/edit.html', context=context)   
+     
+     elif req.method == 'POST':
+          form = ReplayForm(req.POST)
+          if form.is_valid():
+               form.save()
+               return redirect('/blog/')
+          
+
+def delete(req, cid):
+
+     comment = Comments.objects.get(id=cid)
+     comment.delete()
+     return redirect('/')   
      
 
+def edit(req, cid):
+     comment = Comments.objects.get(id=cid)
+     if req.method == 'GET':
+          
+          form = CommentForm(instance=comment)
+          context = {
+               'form' : form,
+          }
+          return render(req,'blog/commentedit.html',context=context)
+     elif req.method == "POST" :
+          form = CommentForm(req.POST, instance=comment)
+          if form.is_valid():
+               form.save()
+               return redirect('/blog/')
+
+
+
+     
+
+
+     
      
      
