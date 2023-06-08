@@ -19,9 +19,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from home.sitemap import StaticSiteMaps
+from blog.sitemap import DynamicSiteMaps
 
 sitemaps ={
-    'static':StaticSiteMaps
+    'static':StaticSiteMaps,
+    'blog':DynamicSiteMaps,
 }
 
 urlpatterns = [
@@ -35,7 +37,10 @@ urlpatterns = [
     sitemap,
     {"sitemaps": sitemaps},
     name="django.contrib.sitemaps.views.sitemap",
-)
+    
+),
+path('robots.txt/', include('robots.urls')),
+path('captcha/', include('captcha.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
