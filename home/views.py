@@ -7,12 +7,9 @@ from .forms import NewsLetterForm, ContactUsForm
 
 def home(req):
     if req.method == 'GET':
-        last_six_posts = Post.objects.filter(status=True)[:6]
         cheap = CheapPackage.objects.all()
-        luxuray = LuxuryPackage.objects.all()
         camp = CampingPackage.objects.all()
-
-        context = {'cheap':cheap,'luxuray':luxuray,'camp':camp, 'last':last_six_posts}
+        context = {'cheap':cheap,'camp':camp}
         return render(req,"home/index.html",context=context)
     elif req.method == 'POST':
         form = NewsLetterForm(req.POST)
