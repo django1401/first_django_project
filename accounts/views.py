@@ -47,8 +47,10 @@ def signup(req):
         return render(req, 'registration/signup.html', {'form': form})
     
     elif req.method == 'POST':
-        form = SignUpForm(req.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
+            form = SignUpForm(req.POST)
+            print (req.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('/')
+
         
